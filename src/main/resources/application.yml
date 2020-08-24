@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gatewayservice
+server:
+  port: 8089
+  servlet:
+    context-path: /gatewayservice
+  tomcat:
+    uri-encoding: UTF-8
+zuul:
+#  add-host-header: true
+#  retryable: true
+#  ignored-services:
+#  sensitive-headers:
+  routes:
+    authorityservice:
+      path: /authService/**
+      serviceId: authorityservice #服务的applicationname，通过eureka找到该服务
+      stripPrefix: false #为true转发时，去掉path字段配置的前缀路径
+      #url: http:// www.baidu.com  #也可以配置外网地址
+
+    steamcatservice:
+      stripPrefix: false
+      path: /steamCatService/**
+
+eureka:
+  instance:
+    # 注册服务使用ip
+    prefer-ip-address: true
+  ###客户端调用地址
+  client:
+    registerWithEureka: true #服务注册开关
+    fetchRegistry: true #服务发现开关
+    serviceUrl:
+      defaultZone: http://steamcat:Steamcat123@127.0.0.1:8100/eureka
